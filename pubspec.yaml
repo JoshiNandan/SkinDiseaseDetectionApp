@@ -35,6 +35,8 @@ dependencies:
     #  for date picker
   flutter_date_pickers: ^0.4.3
   shared_preferences: ^2.5.3
+  image_picker: ^1.1.2
+  permission_handler: ^12.0.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -68,6 +70,11 @@ flutter:
      - images/character_new.jpg
      - images/female-doctor_new.jpg
      - images/logo.jpg
+     - images/eczema.png
+     - images/psoriasis.png
+     - images/acne.png
+     - images/dermatitis.png
+     - images/tinea_cruris.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
