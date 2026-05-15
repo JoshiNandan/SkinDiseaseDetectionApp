@@ -1,0 +1,889 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "description": "Static medical decision-support guidance dictionary for skin disease detection application",
+    "disclaimer": "This is not a medical diagnosis.",
+    "usage_note": "All entries are static, conservative, and safe for display. No diagnosis, no medications, no product names."
+  },
+
+  "diseases": {
+
+    "Scabies": {
+      "severity": "HIGH",
+      "infectious": true,
+      "condition_summary": "Scabies is a contagious skin infestation caused by tiny mites that burrow into the skin, causing intense itching and a rash. It spreads easily through close physical contact.",
+      "area_recommendations": {
+        "urban": {
+          "recommended_action": "Consult a doctor immediately",
+          "facility_type": "Dermatologist consultation recommended"
+        },
+        "semi-urban": {
+          "recommended_action": "Consult a doctor immediately",
+          "facility_type": "Visit a general physician or nearest clinic immediately"
+        },
+        "rural": {
+          "recommended_action": "Consult a doctor immediately",
+          "facility_type": "Visit the nearest health center or primary healthcare facility immediately"
+        }
+      },
+      "confidence_thresholds": {
+        "high": {
+          "range": "0.75 - 1.0",
+          "confidence_interpretation": "The model has high confidence in this result. However, a professional evaluation is still strongly recommended."
+        },
+        "moderate": {
+          "range": "0.60 - 0.74",
+          "confidence_interpretation": "The model has moderate confidence in this result. A professional evaluation is recommended to confirm."
+        },
+        "low": {
+          "range": "0.0 - 0.59",
+          "confidence_interpretation": "The result is uncertain. The model could not confidently identify the condition. Please consult a doctor regardless of this result."
+        }
+      },
+      "home_care": [
+        "Wash all clothing, bedding, and towels in hot water and dry on high heat",
+        "Avoid close skin-to-skin contact with others until evaluated by a doctor",
+        "Keep nails short and clean to minimize skin damage from scratching"
+      ],
+      "when_to_seek_doctor": "Seek a doctor immediately if symptoms are worsening, the rash is spreading to new body areas, you experience severe pain, develop a fever, or if other household members develop similar symptoms.",
+      "age_caution": {
+        "child_under_10": "Extra caution required. Children under 10 years may need special care. Consult a pediatrician or doctor immediately.",
+        "elderly_over_60": "Extra caution required. Elderly individuals over 60 may have a weakened immune response. Consult a doctor immediately.",
+        "standard": "Follow the recommended actions above."
+      }
+    },
+
+    "Tinea Corporis": {
+      "severity": "HIGH",
+      "infectious": true,
+      "condition_summary": "Tinea Corporis, commonly known as ringworm, is a fungal infection of the skin that causes a ring-shaped, scaly rash. It is contagious and can spread through direct contact.",
+      "area_recommendations": {
+        "urban": {
+          "recommended_action": "Consult a doctor immediately",
+          "facility_type": "Dermatologist consultation recommended"
+        },
+        "semi-urban": {
+          "recommended_action": "Consult a doctor immediately",
+          "facility_type": "Visit a general physician or nearest clinic immediately"
+        },
+        "rural": {
+          "recommended_action": "Consult a doctor immediately",
+          "facility_type": "Visit the nearest health center or primary healthcare facility immediately"
+        }
+      },
+      "confidence_thresholds": {
+        "high": {
+          "range": "0.75 - 1.0",
+          "confidence_interpretation": "The model has high confidence in this result. However, a professional evaluation is still strongly recommended."
+        },
+        "moderate": {
+          "range": "0.60 - 0.74",
+          "confidence_interpretation": "The model has moderate confidence in this result. A professional evaluation is recommended to confirm."
+        },
+        "low": {
+          "range": "0.0 - 0.59",
+          "confidence_interpretation": "The result is uncertain. The model could not confidently identify the condition. Please consult a doctor regardless of this result."
+        }
+      },
+      "home_care": [
+        "Keep the affected skin area clean and dry at all times",
+        "Avoid sharing personal items such as towels, clothing, or combs",
+        "Wear loose-fitting, breathable clothing to reduce moisture on skin"
+      ],
+      "when_to_seek_doctor": "Seek a doctor immediately if symptoms are worsening, the rash is spreading to new body areas, you experience pain, develop a fever, or if the condition appears on the scalp or nails.",
+      "age_caution": {
+        "child_under_10": "Extra caution required. Children under 10 are at higher risk of spreading. Consult a pediatrician immediately and keep the child away from school until evaluated.",
+        "elderly_over_60": "Extra caution required. Elderly individuals over 60 may have weakened skin defenses. Consult a doctor immediately.",
+        "standard": "Follow the recommended actions above."
+      }
+    },
+
+    "Tinea Cruris": {
+      "severity": "HIGH",
+      "infectious": true,
+      "condition_summary": "Tinea Cruris, also known as jock itch, is a fungal infection that affects the groin area, inner thighs, and buttocks. It causes a red, itchy, ring-shaped rash and is contagious.",
+      "area_recommendations": {
+        "urban": {
+          "recommended_action": "Consult a doctor immediately",
+          "facility_type": "Dermatologist consultation recommended"
+        },
+        "semi-urban": {
+          "recommended_action": "Consult a doctor immediately",
+          "facility_type": "Visit a general physician or nearest clinic immediately"
+        },
+        "rural": {
+          "recommended_action": "Consult a doctor immediately",
+          "facility_type": "Visit the nearest health center or primary healthcare facility immediately"
+        }
+      },
+      "confidence_thresholds": {
+        "high": {
+          "range": "0.75 - 1.0",
+          "confidence_interpretation": "The model has high confidence in this result. However, a professional evaluation is still strongly recommended."
+        },
+        "moderate": {
+          "range": "0.60 - 0.74",
+          "confidence_interpretation": "The model has moderate confidence in this result. A professional evaluation is recommended to confirm."
+        },
+        "low": {
+          "range": "0.0 - 0.59",
+          "confidence_interpretation": "The result is uncertain. The model could not confidently identify the condition. Please consult a doctor regardless of this result."
+        }
+      },
+      "home_care": [
+        "Keep the groin area clean and completely dry after bathing",
+        "Wear clean, loose-fitting cotton underwear and change it daily",
+        "Avoid sharing towels, underwear, or any personal clothing items"
+      ],
+      "when_to_seek_doctor": "Seek a doctor immediately if symptoms are worsening, the rash is spreading beyond the groin area, you experience significant pain, develop a fever, or if open sores appear.",
+      "age_caution": {
+        "child_under_10": "Extra caution required. This condition is uncommon in young children. Consult a pediatrician immediately for proper evaluation.",
+        "elderly_over_60": "Extra caution required. Elderly individuals over 60 may experience slower healing. Consult a doctor immediately.",
+        "standard": "Follow the recommended actions above."
+      }
+    },
+
+    "Eczema": {
+      "severity": "MODERATE",
+      "infectious": false,
+      "condition_summary": "Eczema is a chronic skin condition that causes patches of skin to become inflamed, itchy, red, and cracked. It is not contagious and is often related to allergies or environmental triggers.",
+      "area_recommendations": {
+        "urban": {
+          "recommended_action": "Consult a doctor if symptoms persist",
+          "facility_type": "Dermatologist consultation recommended"
+        },
+        "semi-urban": {
+          "recommended_action": "Consult a doctor if symptoms persist",
+          "facility_type": "Visit a general physician or nearby clinic"
+        },
+        "rural": {
+          "recommended_action": "Consult a doctor if symptoms persist",
+          "facility_type": "Visit the nearest health center; maintain good skin hygiene in the meantime"
+        }
+      },
+      "confidence_thresholds": {
+        "high": {
+          "range": "0.75 - 1.0",
+          "confidence_interpretation": "The model has high confidence in this result. A professional evaluation is still recommended for proper care."
+        },
+        "moderate": {
+          "range": "0.60 - 0.74",
+          "confidence_interpretation": "The model has moderate confidence in this result. Consult a doctor for confirmation."
+        },
+        "low": {
+          "range": "0.0 - 0.59",
+          "confidence_interpretation": "The result is uncertain. The model could not confidently identify the condition. Please consult a doctor for accurate evaluation."
+        }
+      },
+      "home_care": [
+        "Keep the skin moisturized by applying plain, unscented lotion after bathing",
+        "Avoid known irritants such as harsh soaps, detergents, or rough fabrics",
+        "Use lukewarm water instead of hot water when bathing"
+      ],
+      "when_to_seek_doctor": "Seek a doctor if symptoms are worsening, the rash is spreading, you develop pain, a fever, signs of infection (oozing, crusting), or if the condition significantly affects sleep or daily activities.",
+      "age_caution": {
+        "child_under_10": "Extra caution required. Eczema is common in children but should be evaluated by a pediatrician to rule out other conditions and receive appropriate care guidance.",
+        "elderly_over_60": "Extra caution required. Elderly individuals over 60 may have fragile skin more prone to infection. Consult a doctor if symptoms appear.",
+        "standard": "Follow the recommended actions above."
+      }
+    },
+
+    "Psoriasis": {
+      "severity": "MODERATE",
+      "infectious": false,
+      "condition_summary": "Psoriasis is a chronic autoimmune skin condition that causes rapid skin cell buildup, leading to scaling, redness, and dry patches. It is not contagious and tends to be a long-term condition.",
+      "area_recommendations": {
+        "urban": {
+          "recommended_action": "Consult a doctor if symptoms persist",
+          "facility_type": "Dermatologist consultation recommended"
+        },
+        "semi-urban": {
+          "recommended_action": "Consult a doctor if symptoms persist",
+          "facility_type": "Visit a general physician or nearby clinic"
+        },
+        "rural": {
+          "recommended_action": "Consult a doctor if symptoms persist",
+          "facility_type": "Visit the nearest health center and maintain good skin hygiene"
+        }
+      },
+      "confidence_thresholds": {
+        "high": {
+          "range": "0.75 - 1.0",
+          "confidence_interpretation": "The model has high confidence in this result. A professional evaluation is still recommended."
+        },
+        "moderate": {
+          "range": "0.60 - 0.74",
+          "confidence_interpretation": "The model has moderate confidence in this result. Consult a doctor for confirmation."
+        },
+        "low": {
+          "range": "0.0 - 0.59",
+          "confidence_interpretation": "The result is uncertain. The model could not confidently identify the condition. Please consult a doctor for accurate evaluation."
+        }
+      },
+      "home_care": [
+        "Keep the skin hydrated with gentle, unscented moisturizer especially after bathing",
+        "Avoid skin injuries, cuts, or scratches as they may trigger new patches",
+        "Manage stress levels as stress can trigger flare-ups; try light exercise or relaxation techniques"
+      ],
+      "when_to_seek_doctor": "Seek a doctor if symptoms are worsening, patches are spreading rapidly, you develop joint pain or swelling, experience significant discomfort, or if the condition affects large areas of the body.",
+      "age_caution": {
+        "child_under_10": "Extra caution required. Psoriasis in young children should be evaluated by a pediatric dermatologist for appropriate management.",
+        "elderly_over_60": "Extra caution required. Elderly individuals over 60 may have compounding skin conditions. Consult a doctor for a full skin evaluation.",
+        "standard": "Follow the recommended actions above."
+      }
+    },
+
+    "Acne": {
+      "severity": "MODERATE",
+      "infectious": false,
+      "condition_summary": "Acne is a common skin condition where hair follicles become clogged with oil and dead skin cells, causing pimples, blackheads, or cysts. It most commonly occurs on the face, chest, and back.",
+      "area_recommendations": {
+        "urban": {
+          "recommended_action": "Consult a doctor if symptoms persist",
+          "facility_type": "Dermatologist consultation recommended for persistent or severe cases"
+        },
+        "semi-urban": {
+          "recommended_action": "Consult a doctor if symptoms persist",
+          "facility_type": "Visit a general physician or clinic for persistent cases"
+        },
+        "rural": {
+          "recommended_action": "Consult a doctor if symptoms persist",
+          "facility_type": "Visit the nearest health center; maintain good facial hygiene in the meantime"
+        }
+      },
+      "confidence_thresholds": {
+        "high": {
+          "range": "0.75 - 1.0",
+          "confidence_interpretation": "The model has high confidence in this result. A professional evaluation is still recommended for persistent or severe cases."
+        },
+        "moderate": {
+          "range": "0.60 - 0.74",
+          "confidence_interpretation": "The model has moderate confidence in this result. Monitor the condition and consult a doctor if it worsens."
+        },
+        "low": {
+          "range": "0.0 - 0.59",
+          "confidence_interpretation": "The result is uncertain. The model could not confidently identify the condition. Please consult a doctor for accurate evaluation."
+        }
+      },
+      "home_care": [
+        "Wash the affected area gently twice daily with a mild, water-based cleanser",
+        "Avoid touching or picking at pimples to prevent scarring and spreading bacteria",
+        "Keep hair clean and away from the face; change pillowcases regularly"
+      ],
+      "when_to_seek_doctor": "Seek a doctor if acne is worsening, spreading significantly, causing large painful cysts, leaving scars, or if it is affecting your mental wellbeing.",
+      "age_caution": {
+        "child_under_10": "Extra caution required. Acne in children under 10 is uncommon and should be evaluated by a pediatrician to rule out hormonal or other underlying causes.",
+        "elderly_over_60": "Extra caution required. Acne-like breakouts in individuals over 60 may indicate other skin conditions and should be evaluated by a doctor.",
+        "standard": "Follow the recommended actions above."
+      }
+    },
+
+    "Rosacea": {
+      "severity": "MODERATE",
+      "infectious": false,
+      "condition_summary": "Rosacea is a chronic skin condition that causes persistent redness, visible blood vessels, and sometimes pimple-like bumps, primarily on the face. It is not contagious and tends to flare up periodically.",
+      "area_recommendations": {
+        "urban": {
+          "recommended_action": "Consult a doctor if symptoms persist",
+          "facility_type": "Dermatologist consultation recommended"
+        },
+        "semi-urban": {
+          "recommended_action": "Consult a doctor if symptoms persist",
+          "facility_type": "Visit a general physician or nearby clinic"
+        },
+        "rural": {
+          "recommended_action": "Consult a doctor if symptoms persist",
+          "facility_type": "Visit the nearest health center and note any triggers that worsen the redness"
+        }
+      },
+      "confidence_thresholds": {
+        "high": {
+          "range": "0.75 - 1.0",
+          "confidence_interpretation": "The model has high confidence in this result. A professional evaluation is still recommended for proper care."
+        },
+        "moderate": {
+          "range": "0.60 - 0.74",
+          "confidence_interpretation": "The model has moderate confidence in this result. Consult a doctor for confirmation."
+        },
+        "low": {
+          "range": "0.0 - 0.59",
+          "confidence_interpretation": "The result is uncertain. The model could not confidently identify the condition. Please consult a doctor for accurate evaluation."
+        }
+      },
+      "home_care": [
+        "Protect the face from sun exposure by using shade and wearing a wide-brimmed hat",
+        "Avoid known triggers such as spicy foods, hot beverages, alcohol, and extreme temperatures",
+        "Use gentle, fragrance-free cleansers and avoid scrubbing the face"
+      ],
+      "when_to_seek_doctor": "Seek a doctor if facial redness is worsening, spreading to new areas, you develop eye irritation, pain, or if the skin thickening begins on the nose or cheeks.",
+      "age_caution": {
+        "child_under_10": "Extra caution required. Rosacea is very uncommon in young children. Consult a pediatrician for any persistent facial redness.",
+        "elderly_over_60": "Extra caution required. Elderly individuals over 60 may have more pronounced symptoms. Consult a doctor promptly.",
+        "standard": "Follow the recommended actions above."
+      }
+    },
+
+    "Urticaria": {
+      "severity": "MODERATE",
+      "infectious": false,
+      "condition_summary": "Urticaria, commonly known as hives, is a skin reaction that causes raised, itchy welts. It can be triggered by allergies, stress, infections, or other factors and may appear suddenly.",
+      "area_recommendations": {
+        "urban": {
+          "recommended_action": "Consult a doctor if symptoms persist",
+          "facility_type": "Dermatologist or allergist consultation recommended for recurring cases"
+        },
+        "semi-urban": {
+          "recommended_action": "Consult a doctor if symptoms persist",
+          "facility_type": "Visit a general physician or nearby clinic"
+        },
+        "rural": {
+          "recommended_action": "Consult a doctor if symptoms persist",
+          "facility_type": "Visit the nearest health center; note any suspected food or environmental triggers"
+        }
+      },
+      "confidence_thresholds": {
+        "high": {
+          "range": "0.75 - 1.0",
+          "confidence_interpretation": "The model has high confidence in this result. A professional evaluation is still recommended especially if symptoms are severe."
+        },
+        "moderate": {
+          "range": "0.60 - 0.74",
+          "confidence_interpretation": "The model has moderate confidence in this result. Consult a doctor if symptoms persist or worsen."
+        },
+        "low": {
+          "range": "0.0 - 0.59",
+          "confidence_interpretation": "The result is uncertain. The model could not confidently identify the condition. Please consult a doctor for accurate evaluation."
+        }
+      },
+      "home_care": [
+        "Try to identify and avoid potential triggers such as specific foods, soaps, or plants",
+        "Apply a cool, clean cloth to the affected area to reduce itching and swelling",
+        "Wear loose, soft, breathable clothing to reduce skin irritation"
+      ],
+      "when_to_seek_doctor": "Seek emergency medical care immediately if you experience swelling of the throat, tongue, or lips, difficulty breathing, dizziness, or a drop in blood pressure. Seek a doctor if hives persist for more than 48 hours, are spreading, or are accompanied by fever.",
+      "age_caution": {
+        "child_under_10": "Extra caution required. Hives in children under 10 can indicate a serious allergic reaction. Seek medical attention immediately if breathing is affected.",
+        "elderly_over_60": "Extra caution required. Elderly individuals over 60 may have more severe reactions. Consult a doctor promptly.",
+        "standard": "Follow the recommended actions above."
+      }
+    },
+
+    "Vitiligo": {
+      "severity": "MODERATE",
+      "infectious": false,
+      "condition_summary": "Vitiligo is a long-term skin condition where patches of skin lose their pigment, resulting in white or light-colored spots. It is not contagious and is caused by the loss of melanin-producing cells.",
+      "area_recommendations": {
+        "urban": {
+          "recommended_action": "Consult a doctor if symptoms persist",
+          "facility_type": "Dermatologist consultation recommended"
+        },
+        "semi-urban": {
+          "recommended_action": "Consult a doctor if symptoms persist",
+          "facility_type": "Visit a general physician or nearby clinic"
+        },
+        "rural": {
+          "recommended_action": "Consult a doctor if symptoms persist",
+          "facility_type": "Visit the nearest health center for evaluation and guidance"
+        }
+      },
+      "confidence_thresholds": {
+        "high": {
+          "range": "0.75 - 1.0",
+          "confidence_interpretation": "The model has high confidence in this result. A professional evaluation is still recommended for proper care and management."
+        },
+        "moderate": {
+          "range": "0.60 - 0.74",
+          "confidence_interpretation": "The model has moderate confidence in this result. Consult a doctor for confirmation."
+        },
+        "low": {
+          "range": "0.0 - 0.59",
+          "confidence_interpretation": "The result is uncertain. The model could not confidently identify the condition. Please consult a doctor for accurate evaluation."
+        }
+      },
+      "home_care": [
+        "Protect depigmented skin areas from sun exposure using shade and protective clothing",
+        "Keep the skin well moisturized with gentle, unscented lotion",
+        "Avoid skin injuries or trauma to affected areas as they may worsen the condition"
+      ],
+      "when_to_seek_doctor": "Seek a doctor if the white patches are spreading rapidly, appearing on the face or other visible areas, or if the condition is causing emotional distress.",
+      "age_caution": {
+        "child_under_10": "Extra caution required. Vitiligo in young children should be evaluated by a pediatric dermatologist to rule out associated conditions.",
+        "elderly_over_60": "Extra caution required. New pigmentation changes in individuals over 60 should be evaluated promptly to rule out other conditions.",
+        "standard": "Follow the recommended actions above."
+      }
+    },
+
+    "Contact Dermatitis": {
+      "severity": "MODERATE",
+      "infectious": false,
+      "condition_summary": "Contact Dermatitis is a red, itchy rash caused by direct contact with a substance that irritates the skin or triggers an allergic reaction. It is not contagious but can cause significant discomfort.",
+      "area_recommendations": {
+        "urban": {
+          "recommended_action": "Consult a doctor if symptoms persist",
+          "facility_type": "Dermatologist consultation recommended for identifying the allergen"
+        },
+        "semi-urban": {
+          "recommended_action": "Consult a doctor if symptoms persist",
+          "facility_type": "Visit a general physician or nearby clinic"
+        },
+        "rural": {
+          "recommended_action": "Consult a doctor if symptoms persist",
+          "facility_type": "Visit the nearest health center; remove contact with the suspected irritant immediately"
+        }
+      },
+      "confidence_thresholds": {
+        "high": {
+          "range": "0.75 - 1.0",
+          "confidence_interpretation": "The model has high confidence in this result. A professional evaluation is still recommended for identifying the trigger."
+        },
+        "moderate": {
+          "range": "0.60 - 0.74",
+          "confidence_interpretation": "The model has moderate confidence in this result. Consult a doctor for confirmation and trigger identification."
+        },
+        "low": {
+          "range": "0.0 - 0.59",
+          "confidence_interpretation": "The result is uncertain. The model could not confidently identify the condition. Please consult a doctor for accurate evaluation."
+        }
+      },
+      "home_care": [
+        "Immediately stop contact with the suspected irritant or allergen",
+        "Rinse the affected area thoroughly with clean, cool water",
+        "Keep the area clean and dry; avoid scratching to prevent skin damage"
+      ],
+      "when_to_seek_doctor": "Seek a doctor if symptoms are worsening, the rash is spreading, blisters develop, you experience significant pain, or if the rash appears on the face or near the eyes.",
+      "age_caution": {
+        "child_under_10": "Extra caution required. Children under 10 have sensitive skin and should be seen by a pediatrician promptly to identify and remove the irritant.",
+        "elderly_over_60": "Extra caution required. Elderly individuals over 60 have thinner skin more prone to damage. Consult a doctor promptly.",
+        "standard": "Follow the recommended actions above."
+      }
+    },
+
+    "Seborrheic Dermatitis": {
+      "severity": "MODERATE",
+      "infectious": false,
+      "condition_summary": "Seborrheic Dermatitis is a common skin condition that causes scaly patches, red skin, and stubborn dandruff, mainly affecting oily areas of the body such as the scalp, face, and chest. It is not contagious.",
+      "area_recommendations": {
+        "urban": {
+          "recommended_action": "Consult a doctor if symptoms persist",
+          "facility_type": "Dermatologist consultation recommended"
+        },
+        "semi-urban": {
+          "recommended_action": "Consult a doctor if symptoms persist",
+          "facility_type": "Visit a general physician or nearby clinic"
+        },
+        "rural": {
+          "recommended_action": "Consult a doctor if symptoms persist",
+          "facility_type": "Visit the nearest health center; maintain good hygiene of the scalp and affected areas"
+        }
+      },
+      "confidence_thresholds": {
+        "high": {
+          "range": "0.75 - 1.0",
+          "confidence_interpretation": "The model has high confidence in this result. A professional evaluation is still recommended."
+        },
+        "moderate": {
+          "range": "0.60 - 0.74",
+          "confidence_interpretation": "The model has moderate confidence in this result. Consult a doctor if symptoms persist."
+        },
+        "low": {
+          "range": "0.0 - 0.59",
+          "confidence_interpretation": "The result is uncertain. The model could not confidently identify the condition. Please consult a doctor for accurate evaluation."
+        }
+      },
+      "home_care": [
+        "Gently clean the affected areas regularly with mild, gentle cleansers",
+        "Avoid picking or scratching the scaly patches to prevent irritation or infection",
+        "Manage stress levels as stress may worsen flare-ups"
+      ],
+      "when_to_seek_doctor": "Seek a doctor if scales are spreading, redness is increasing, the area becomes painful, develops signs of infection, or if the condition significantly affects your quality of life.",
+      "age_caution": {
+        "child_under_10": "Extra caution required. Seborrheic dermatitis in infants (cradle cap) is common, but persistent or spreading cases should be evaluated by a pediatrician.",
+        "elderly_over_60": "Extra caution required. Elderly individuals over 60 may have more extensive involvement. Consult a doctor for appropriate management.",
+        "standard": "Follow the recommended actions above."
+      }
+    },
+
+    "Impetigo": {
+      "severity": "HIGH",
+      "infectious": true,
+      "condition_summary": "Impetigo is a highly contagious bacterial skin infection that causes red sores or blisters that can burst and develop a honey-colored crust. It spreads easily through direct contact, especially in children.",
+      "area_recommendations": {
+        "urban": {
+          "recommended_action": "Consult a doctor immediately",
+          "facility_type": "Dermatologist or general physician consultation recommended immediately"
+        },
+        "semi-urban": {
+          "recommended_action": "Consult a doctor immediately",
+          "facility_type": "Visit a general physician or nearest clinic immediately"
+        },
+        "rural": {
+          "recommended_action": "Consult a doctor immediately",
+          "facility_type": "Visit the nearest health center or primary healthcare facility immediately"
+        }
+      },
+      "confidence_thresholds": {
+        "high": {
+          "range": "0.75 - 1.0",
+          "confidence_interpretation": "The model has high confidence in this result. Seek medical attention immediately as this condition is highly contagious."
+        },
+        "moderate": {
+          "range": "0.60 - 0.74",
+          "confidence_interpretation": "The model has moderate confidence in this result. Seek medical attention promptly as this may be a contagious condition."
+        },
+        "low": {
+          "range": "0.0 - 0.59",
+          "confidence_interpretation": "The result is uncertain. However, if sores or crusting are present, please consult a doctor immediately as a precaution."
+        }
+      },
+      "home_care": [
+        "Keep the affected area and hands clean by washing regularly with soap and water",
+        "Avoid touching the sores and do not share towels, clothing, or personal items with others",
+        "Keep the affected person away from school, work, or crowded areas until evaluated by a doctor"
+      ],
+      "when_to_seek_doctor": "Seek a doctor immediately if sores are spreading, increasing in number, the affected person develops a fever, swollen lymph nodes, or feels generally unwell.",
+      "age_caution": {
+        "child_under_10": "Extra caution required. Impetigo is very common in children under 10. Keep the child isolated from others and seek medical attention immediately.",
+        "elderly_over_60": "Extra caution required. Elderly individuals over 60 may develop complications. Seek medical attention immediately.",
+        "standard": "Follow the recommended actions above."
+      }
+    },
+
+    "Cellulitis": {
+      "severity": "HIGH",
+      "infectious": true,
+      "condition_summary": "Cellulitis is a common and potentially serious bacterial skin infection that causes redness, swelling, and pain in the affected area. It can spread rapidly and requires prompt medical attention.",
+      "area_recommendations": {
+        "urban": {
+          "recommended_action": "Consult a doctor immediately",
+          "facility_type": "Visit a dermatologist or hospital emergency department immediately"
+        },
+        "semi-urban": {
+          "recommended_action": "Consult a doctor immediately",
+          "facility_type": "Visit the nearest clinic or hospital emergency department immediately"
+        },
+        "rural": {
+          "recommended_action": "Consult a doctor immediately",
+          "facility_type": "Visit the nearest health center or hospital immediately; do not delay"
+        }
+      },
+      "confidence_thresholds": {
+        "high": {
+          "range": "0.75 - 1.0",
+          "confidence_interpretation": "The model has high confidence in this result. Seek medical attention immediately as cellulitis can progress rapidly."
+        },
+        "moderate": {
+          "range": "0.60 - 0.74",
+          "confidence_interpretation": "The model has moderate confidence in this result. Seek medical attention promptly given the potential severity."
+        },
+        "low": {
+          "range": "0.0 - 0.59",
+          "confidence_interpretation": "The result is uncertain. However, if there is spreading redness, warmth, and swelling, seek medical attention immediately as a precaution."
+        }
+      },
+      "home_care": [
+        "Keep the affected limb or area elevated above heart level to reduce swelling if possible",
+        "Keep the affected area clean and do not attempt to drain or puncture any swelling",
+        "Rest and avoid putting pressure or weight on the affected area"
+      ],
+      "when_to_seek_doctor": "Seek emergency medical care immediately if redness is spreading rapidly, you develop a high fever, chills, increasing pain, red streaks from the area, or feel severely unwell.",
+      "age_caution": {
+        "child_under_10": "Extra caution required. Cellulitis in young children requires immediate medical evaluation without delay.",
+        "elderly_over_60": "Extra caution required. Elderly individuals over 60 are at significantly higher risk of serious complications. Seek emergency care immediately.",
+        "standard": "Follow the recommended actions above."
+      }
+    },
+
+    "Melanoma": {
+      "severity": "HIGH",
+      "infectious": false,
+      "condition_summary": "Melanoma is a serious form of skin cancer that develops in the cells responsible for skin color. Early detection is critical, and any suspicious mole or skin lesion that changes in size, color, or shape should be evaluated immediately by a doctor.",
+      "area_recommendations": {
+        "urban": {
+          "recommended_action": "Consult a doctor immediately",
+          "facility_type": "Dermatologist or oncologist consultation required urgently"
+        },
+        "semi-urban": {
+          "recommended_action": "Consult a doctor immediately",
+          "facility_type": "Visit the nearest hospital or cancer care center urgently"
+        },
+        "rural": {
+          "recommended_action": "Consult a doctor immediately",
+          "facility_type": "Visit the nearest hospital or government health center and request an urgent referral"
+        }
+      },
+      "confidence_thresholds": {
+        "high": {
+          "range": "0.75 - 1.0",
+          "confidence_interpretation": "The model has high confidence in detecting a suspicious lesion. Seek specialist medical attention immediately. This is not a confirmed diagnosis."
+        },
+        "moderate": {
+          "range": "0.60 - 0.74",
+          "confidence_interpretation": "The model has moderate confidence. Given the potential severity, seek medical attention promptly for professional evaluation."
+        },
+        "low": {
+          "range": "0.0 - 0.59",
+          "confidence_interpretation": "The result is uncertain. However, any unusual or changing skin lesion should be evaluated by a doctor as a precaution."
+        }
+      },
+      "home_care": [
+        "Avoid sun exposure on the suspicious lesion and keep it covered with clean clothing",
+        "Do not scratch, pick, or irritate the suspicious area",
+        "Take clear photographs of the lesion to show its current appearance to the doctor"
+      ],
+      "when_to_seek_doctor": "Seek a doctor immediately if a mole or skin spot changes in size, shape, or color, has irregular borders, bleeds, or if a new unusual skin growth appears.",
+      "age_caution": {
+        "child_under_10": "Extra caution required. Melanoma is rare in young children but any unusual changing skin lesion should be evaluated by a pediatric dermatologist promptly.",
+        "elderly_over_60": "Extra caution required. Elderly individuals over 60 have a higher risk of skin cancers. Any suspicious lesion must be evaluated by a specialist immediately.",
+        "standard": "Follow the recommended actions above."
+      }
+    },
+
+    "Basal Cell Carcinoma": {
+      "severity": "HIGH",
+      "infectious": false,
+      "condition_summary": "Basal Cell Carcinoma is the most common type of skin cancer. It grows slowly and rarely spreads, but requires professional evaluation and treatment. It often appears as a pearly bump or a flat, flesh-colored lesion.",
+      "area_recommendations": {
+        "urban": {
+          "recommended_action": "Consult a doctor immediately",
+          "facility_type": "Dermatologist consultation required urgently"
+        },
+        "semi-urban": {
+          "recommended_action": "Consult a doctor immediately",
+          "facility_type": "Visit the nearest hospital or specialist clinic urgently"
+        },
+        "rural": {
+          "recommended_action": "Consult a doctor immediately",
+          "facility_type": "Visit the nearest government health center and request an urgent referral to a specialist"
+        }
+      },
+      "confidence_thresholds": {
+        "high": {
+          "range": "0.75 - 1.0",
+          "confidence_interpretation": "The model has high confidence in detecting a suspicious lesion. Seek specialist medical attention immediately. This is not a confirmed diagnosis."
+        },
+        "moderate": {
+          "range": "0.60 - 0.74",
+          "confidence_interpretation": "The model has moderate confidence. Seek medical attention promptly for professional evaluation."
+        },
+        "low": {
+          "range": "0.0 - 0.59",
+          "confidence_interpretation": "The result is uncertain. However, any unusual skin growth should be evaluated by a doctor as a precaution."
+        }
+      },
+      "home_care": [
+        "Protect the suspicious area from sun exposure by keeping it covered",
+        "Do not scratch, pick at, or try to remove the lesion yourself",
+        "Note any changes in the lesion's appearance, size, or whether it bleeds"
+      ],
+      "when_to_seek_doctor": "Seek a doctor immediately if the lesion bleeds, changes in appearance, grows in size, or if a new unusual skin growth appears anywhere on the body.",
+      "age_caution": {
+        "child_under_10": "Extra caution required. Basal Cell Carcinoma is extremely rare in children. Any persistent unusual skin lesion in a child must be evaluated by a pediatric dermatologist.",
+        "elderly_over_60": "Extra caution required. Elderly individuals over 60 have a significantly higher risk of skin cancers. Seek specialist evaluation immediately.",
+        "standard": "Follow the recommended actions above."
+      }
+    },
+
+    "Chickenpox": {
+      "severity": "HIGH",
+      "infectious": true,
+      "condition_summary": "Chickenpox is a highly contagious viral infection that causes an itchy blister-like rash all over the body, often accompanied by fever and fatigue. It spreads through the air and direct contact.",
+      "area_recommendations": {
+        "urban": {
+          "recommended_action": "Consult a doctor immediately",
+          "facility_type": "General physician or dermatologist consultation recommended immediately"
+        },
+        "semi-urban": {
+          "recommended_action": "Consult a doctor immediately",
+          "facility_type": "Visit a general physician or nearest clinic immediately"
+        },
+        "rural": {
+          "recommended_action": "Consult a doctor immediately",
+          "facility_type": "Visit the nearest health center immediately; isolate the affected person from others"
+        }
+      },
+      "confidence_thresholds": {
+        "high": {
+          "range": "0.75 - 1.0",
+          "confidence_interpretation": "The model has high confidence in this result. Isolate the affected person and seek medical attention immediately."
+        },
+        "moderate": {
+          "range": "0.60 - 0.74",
+          "confidence_interpretation": "The model has moderate confidence in this result. Isolate the affected person and seek medical attention promptly."
+        },
+        "low": {
+          "range": "0.0 - 0.59",
+          "confidence_interpretation": "The result is uncertain. If a blister-like rash with fever is present, seek medical attention immediately as a precaution."
+        }
+      },
+      "home_care": [
+        "Isolate the affected person from others, especially from pregnant women, newborns, and immunocompromised individuals",
+        "Keep the skin clean and trim fingernails short to minimize scratching and risk of secondary infection",
+        "Ensure the affected person stays well hydrated with plenty of fluids"
+      ],
+      "when_to_seek_doctor": "Seek a doctor immediately if a very high fever develops, blisters appear near the eyes, the affected person has difficulty breathing, becomes confused, or if blisters show signs of bacterial infection.",
+      "age_caution": {
+        "child_under_10": "Extra caution required. Chickenpox is most common in children. Keep the child isolated from school and other children. Seek medical attention promptly.",
+        "elderly_over_60": "Extra caution required. Chickenpox in adults and the elderly over 60 can be severe and lead to serious complications. Seek emergency medical attention immediately.",
+        "standard": "Follow the recommended actions above."
+      }
+    },
+
+    "Herpes Zoster": {
+      "severity": "HIGH",
+      "infectious": true,
+      "condition_summary": "Herpes Zoster, commonly known as shingles, is a viral infection that causes a painful rash, usually appearing as a stripe of blisters on one side of the body or face. It is caused by the reactivation of the chickenpox virus.",
+      "area_recommendations": {
+        "urban": {
+          "recommended_action": "Consult a doctor immediately",
+          "facility_type": "Dermatologist or general physician consultation required immediately"
+        },
+        "semi-urban": {
+          "recommended_action": "Consult a doctor immediately",
+          "facility_type": "Visit a general physician or nearest clinic immediately"
+        },
+        "rural": {
+          "recommended_action": "Consult a doctor immediately",
+          "facility_type": "Visit the nearest health center immediately; early treatment is important"
+        }
+      },
+      "confidence_thresholds": {
+        "high": {
+          "range": "0.75 - 1.0",
+          "confidence_interpretation": "The model has high confidence in this result. Seek medical attention immediately as early treatment is important."
+        },
+        "moderate": {
+          "range": "0.60 - 0.74",
+          "confidence_interpretation": "The model has moderate confidence in this result. Seek medical attention promptly."
+        },
+        "low": {
+          "range": "0.0 - 0.59",
+          "confidence_interpretation": "The result is uncertain. If there is a painful blistering rash on one side of the body, seek medical attention immediately as a precaution."
+        }
+      },
+      "home_care": [
+        "Keep the rash area clean and dry; cover blisters with a clean, non-stick dressing",
+        "Avoid contact with pregnant women, newborns, and people who have not had chickenpox until blisters have fully dried",
+        "Rest adequately and avoid stress as it may worsen symptoms"
+      ],
+      "when_to_seek_doctor": "Seek a doctor immediately if the rash appears near the eye or ear, pain is severe, you develop a fever, or if you are immunocompromised. Seek emergency care if vision is affected.",
+      "age_caution": {
+        "child_under_10": "Extra caution required. Herpes Zoster is uncommon in young children. Any such rash in a child must be evaluated by a pediatrician immediately.",
+        "elderly_over_60": "Extra caution required. Elderly individuals over 60 are at the highest risk for severe shingles and long-term nerve pain. Seek medical attention immediately — do not delay.",
+        "standard": "Follow the recommended actions above."
+      }
+    },
+
+    "Folliculitis": {
+      "severity": "MODERATE",
+      "infectious": false,
+      "condition_summary": "Folliculitis is an inflammation of the hair follicles that causes small red bumps or whiteheads around hair follicles. It can be caused by bacterial or fungal infection, friction, or blockage.",
+      "area_recommendations": {
+        "urban": {
+          "recommended_action": "Consult a doctor if symptoms persist",
+          "facility_type": "Dermatologist consultation recommended for persistent cases"
+        },
+        "semi-urban": {
+          "recommended_action": "Consult a doctor if symptoms persist",
+          "facility_type": "Visit a general physician or nearby clinic"
+        },
+        "rural": {
+          "recommended_action": "Consult a doctor if symptoms persist",
+          "facility_type": "Visit the nearest health center; maintain good hygiene of the affected area"
+        }
+      },
+      "confidence_thresholds": {
+        "high": {
+          "range": "0.75 - 1.0",
+          "confidence_interpretation": "The model has high confidence in this result. A professional evaluation is recommended, especially if widespread or recurring."
+        },
+        "moderate": {
+          "range": "0.60 - 0.74",
+          "confidence_interpretation": "The model has moderate confidence in this result. Consult a doctor if symptoms do not improve."
+        },
+        "low": {
+          "range": "0.0 - 0.59",
+          "confidence_interpretation": "The result is uncertain. Please consult a doctor for accurate evaluation."
+        }
+      },
+      "home_care": [
+        "Keep the affected area clean by washing gently with mild soap and water",
+        "Wear loose-fitting clothing to reduce friction on the affected skin",
+        "Avoid shaving over the affected area until it heals"
+      ],
+      "when_to_seek_doctor": "Seek a doctor if bumps are spreading, increasing in number, become painful, develop into large boils, or if you develop a fever.",
+      "age_caution": {
+        "child_under_10": "Extra caution required. Folliculitis in young children should be evaluated by a pediatrician to rule out other causes.",
+        "elderly_over_60": "Extra caution required. Elderly individuals over 60 may be more susceptible to bacterial infections. Consult a doctor if it worsens.",
+        "standard": "Follow the recommended actions above."
+      }
+    },
+
+    "Pityriasis Rosea": {
+      "severity": "MODERATE",
+      "infectious": false,
+      "condition_summary": "Pityriasis Rosea is a common skin rash that usually starts as a single large patch and then spreads to form smaller oval patches across the trunk and limbs. It is generally mild and resolves on its own within weeks.",
+      "area_recommendations": {
+        "urban": {
+          "recommended_action": "Consult a doctor if symptoms persist",
+          "facility_type": "Dermatologist consultation recommended"
+        },
+        "semi-urban": {
+          "recommended_action": "Consult a doctor if symptoms persist",
+          "facility_type": "Visit a general physician or nearby clinic"
+        },
+        "rural": {
+          "recommended_action": "Consult a doctor if symptoms persist",
+          "facility_type": "Visit the nearest health center for evaluation and guidance"
+        }
+      },
+      "confidence_thresholds": {
+        "high": {
+          "range": "0.75 - 1.0",
+          "confidence_interpretation": "The model has high confidence in this result. A professional evaluation is still recommended to confirm and rule out other conditions."
+        },
+        "moderate": {
+          "range": "0.60 - 0.74",
+          "confidence_interpretation": "The model has moderate confidence in this result. Consult a doctor for confirmation."
+        },
+        "low": {
+          "range": "0.0 - 0.59",
+          "confidence_interpretation": "The result is uncertain. Please consult a doctor for accurate evaluation."
+        }
+      },
+      "home_care": [
+        "Wear loose, breathable clothing to minimize irritation of the rash",
+        "Avoid hot baths or showers as heat may worsen itching",
+        "Keep the skin moisturized with gentle, unscented lotion to reduce dryness"
+      ],
+      "when_to_seek_doctor": "Seek a doctor if the rash is spreading rapidly, becoming very itchy, painful, or if it has not improved after 8 weeks.",
+      "age_caution": {
+        "child_under_10": "Extra caution required. Pityriasis Rosea in young children should be evaluated by a pediatrician to confirm the diagnosis.",
+        "elderly_over_60": "Extra caution required. Unusual rashes in individuals over 60 should be evaluated by a doctor to rule out other conditions.",
+        "standard": "Follow the recommended actions above."
+      }
+    }
+
+  },
+
+  "global_rules": {
+    "severity_override": {
+      "diseases_always_high": ["Scabies", "Tinea Corporis", "Tinea Cruris", "Impetigo", "Cellulitis", "Melanoma", "Basal Cell Carcinoma", "Chickenpox", "Herpes Zoster"],
+      "note": "All HIGH severity diseases and all infectious diseases always trigger IMMEDIATE doctor consultation regardless of confidence score."
+    },
+    "confidence_rules": {
+      "below_0.6": "Always state: 'The result is uncertain. The model could not confidently identify the condition. Please consult a doctor for accurate evaluation.'",
+      "0.6_to_0.74": "Moderate confidence — recommend professional confirmation",
+      "0.75_and_above": "High confidence — recommend professional evaluation"
+    },
+    "age_rules": {
+      "under_10": "Always increase caution level. Add child-specific note. Recommend pediatrician where applicable.",
+      "over_60": "Always increase caution level. Add elderly-specific note. Emphasize prompt medical care."
+    },
+    "area_rules": {
+      "rural": "Recommend nearest health center. Include basic hygiene advice.",
+      "semi-urban": "Recommend general physician or local clinic.",
+      "urban": "Recommend dermatologist consultation."
+    },
+    "universal_disclaimer": "This is not a medical diagnosis."
+  }
+}

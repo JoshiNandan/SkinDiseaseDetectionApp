@@ -1,0 +1,6 @@
+__pycache__/
+model_sgp/
+.env
+*.pyc
+python-3.11.9-amd64.exe
+*.pth

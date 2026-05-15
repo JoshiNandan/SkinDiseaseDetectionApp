@@ -1,5 +1,5 @@
+import 'package:disease_detection_app/screens/splash_screen2.dart';
 import 'package:flutter/material.dart';
-import 'package:disease_detection_app/screens/splashscreen2.dart';
 
 class SplashScreen1 extends StatefulWidget {
   const SplashScreen1({super.key});
@@ -39,15 +39,13 @@ class _SplashScreen1State extends State<SplashScreen1>
       ),
     );
 
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.3),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: const Interval(0.3, 0.6, curve: Curves.easeOut),
-      ),
-    );
+    _slideAnimation =
+        Tween<Offset>(begin: const Offset(0, 0.3), end: Offset.zero).animate(
+          CurvedAnimation(
+            parent: _controller,
+            curve: const Interval(0.3, 0.6, curve: Curves.easeOut),
+          ),
+        );
 
     _progressAnimation = CurvedAnimation(
       parent: _controller,
@@ -62,11 +60,11 @@ class _SplashScreen1State extends State<SplashScreen1>
           context,
           PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) =>
-            const SplashScreen2(),
+                const SplashScreen2(),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
-              return FadeTransition(opacity: animation, child: child);
-            },
+                  return FadeTransition(opacity: animation, child: child);
+                },
             transitionDuration: const Duration(milliseconds: 800),
           ),
         );
@@ -88,11 +86,7 @@ class _SplashScreen1State extends State<SplashScreen1>
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              Colors.teal.shade50,
-              Colors.white,
-              Colors.teal.shade50,
-            ],
+            colors: [Colors.teal.shade50, Colors.white, Colors.teal.shade50],
           ),
         ),
         child: SafeArea(
@@ -212,7 +206,9 @@ class _SplashScreen1State extends State<SplashScreen1>
                           child: FadeTransition(
                             opacity: _fadeAnimation,
                             child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 30),
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 30,
+                              ),
                               padding: const EdgeInsets.all(20),
                               decoration: BoxDecoration(
                                 color: Colors.white,
@@ -321,7 +317,8 @@ class _SplashScreen1State extends State<SplashScreen1>
                                         ),
                                       ],
                                     ),
-                                    width: MediaQuery.of(context).size.width *
+                                    width:
+                                        MediaQuery.of(context).size.width *
                                         _progressAnimation.value,
                                   ),
                                 ],

@@ -1,20 +1,23 @@
 import 'dart:async';
+
 import 'package:disease_detection_app/screens/disease_detection_screen.dart';
-import 'package:disease_detection_app/screens/userprofile.dart';
+import 'package:disease_detection_app/screens/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'medicalhistory.dart';
+
 import 'login_screen.dart';
+import 'medical_history.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
   final PageController _pageController = PageController();
   int _currentPage = 0;
   Timer? _autoScrollTimer;
@@ -26,32 +29,43 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     {
       'image': 'images/eczema.png',
       'title': 'Eczema',
-      'description': 'A condition that makes your skin red, inflamed, itchy, cracked, and rough. Common in children but can occur at any age.',
+      'description':
+          'A condition that makes your skin red, inflamed, itchy, cracked, and rough. Common in children but can occur at any age.',
       'symptoms': ['Dry skin', 'Itching', 'Red patches', 'Inflammation'],
     },
     {
       'image': 'images/psoriasis.png',
       'title': 'Psoriasis',
-      'description': 'An autoimmune condition that causes rapid buildup of skin cells, leading to scaling on the skin\'s surface.',
+      'description':
+          'An autoimmune condition that causes rapid buildup of skin cells, leading to scaling on the skin\'s surface.',
       'symptoms': ['Scaly patches', 'Dry skin', 'Itching', 'Burning sensation'],
     },
     {
       'image': 'images/acne.png',
       'title': 'Acne',
-      'description': 'A skin condition that occurs when hair follicles become clogged with oil and dead skin cells.',
+      'description':
+          'A skin condition that occurs when hair follicles become clogged with oil and dead skin cells.',
       'symptoms': ['Pimples', 'Blackheads', 'Whiteheads', 'Inflamed bumps'],
     },
     {
       'image': 'images/dermatitis.png',
       'title': 'Dermatitis',
-      'description': 'General inflammation of the skin with various causes including allergies, irritants, or genetics.',
+      'description':
+          'General inflammation of the skin with various causes including allergies, irritants, or genetics.',
       'symptoms': ['Redness', 'Swelling', 'Itching', 'Blisters'],
     },
     {
       'image': 'images/tinea_cruris.png',
       'title': 'Tinea Cruris',
-      'description': 'Tinea cruris, also known as jock itch, is a common type of contagious, superficial fungal infection of the groin and buttocks region.Typically, over the upper inner thighs, there is an intensely itchy red raised rash with a scaly well-defined curved border.',
-      'symptoms': ['flaking','rippling','peeling','iridescence','cracking skin'],
+      'description':
+          'Tinea cruris, also known as jock itch, is a common type of contagious, superficial fungal infection of the groin and buttocks region.Typically, over the upper inner thighs, there is an intensely itchy red raised rash with a scaly well-defined curved border.',
+      'symptoms': [
+        'flaking',
+        'rippling',
+        'peeling',
+        'iridescence',
+        'cracking skin',
+      ],
     },
   ];
 
@@ -203,7 +217,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                     const SizedBox(height: 15),
                     ...List.generate(
                       disease['symptoms'].length,
-                          (index) => Padding(
+                      (index) => Padding(
                         padding: const EdgeInsets.only(bottom: 12),
                         child: Row(
                           children: [
@@ -239,7 +253,10 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                       ),
                       child: Row(
                         children: [
-                          Icon(Icons.info_outline, color: Colors.orange.shade700),
+                          Icon(
+                            Icons.info_outline,
+                            color: Colors.orange.shade700,
+                          ),
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
@@ -288,7 +305,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
             onPressed: () => Navigator.pop(context, true),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.teal.shade600,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
             child: Text('Logout', style: GoogleFonts.poppins()),
           ),
@@ -353,7 +372,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                     child: CircleAvatar(
                       radius: 35,
                       backgroundColor: Colors.teal.shade100,
-                      child: Icon(Icons.person, size: 40, color: Colors.teal.shade700),
+                      child: Icon(
+                        Icons.person,
+                        size: 40,
+                        color: Colors.teal.shade700,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 15),
@@ -397,7 +420,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                       Navigator.pop(context);
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => MedicalHistoryPage()),
+                        MaterialPageRoute(
+                          builder: (context) => MedicalHistoryPage(),
+                        ),
                       );
                     },
                   ),
@@ -482,7 +507,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                         color: Colors.grey.shade800,
                       ),
                     ),
-                    Icon(Icons.arrow_forward_ios, size: 18, color: Colors.grey.shade600),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      size: 18,
+                      color: Colors.grey.shade600,
+                    ),
                   ],
                 ),
               ),
@@ -500,7 +529,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                   itemCount: _skinDiseases.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
-                      onTap: () => _showDiseaseInfo(context, _skinDiseases[index]),
+                      onTap: () =>
+                          _showDiseaseInfo(context, _skinDiseases[index]),
                       child: Container(
                         margin: const EdgeInsets.symmetric(horizontal: 15),
                         decoration: BoxDecoration(
@@ -578,7 +608,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(
                   _skinDiseases.length,
-                      (index) => Container(
+                  (index) => Container(
                     width: _currentPage == index ? 24 : 8,
                     height: 8,
                     margin: const EdgeInsets.symmetric(horizontal: 4),
@@ -615,7 +645,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                 child: _buildFeatureCard(
                   icon: Icons.camera_alt,
                   title: 'Disease Detection',
-                  description: 'Upload or capture skin photos for AI-powered analysis',
+                  description:
+                      'Upload or capture skin photos for AI-powered analysis',
                   color: Colors.teal,
                   onTap: () {
                     Navigator.push(
@@ -645,7 +676,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.info_outline, color: Colors.teal.shade700, size: 30),
+                    Icon(
+                      Icons.info_outline,
+                      color: Colors.teal.shade700,
+                      size: 30,
+                    ),
                     const SizedBox(width: 15),
                     Expanded(
                       child: Text(
@@ -746,7 +781,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                 ],
               ),
             ),
-            Icon(Icons.arrow_forward_ios, size: 18, color: Colors.grey.shade400),
+            Icon(
+              Icons.arrow_forward_ios,
+              size: 18,
+              color: Colors.grey.shade400,
+            ),
           ],
         ),
       ),
@@ -843,12 +882,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         children: [
           Icon(Icons.check_circle, color: Colors.teal.shade600, size: 18),
           const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              text,
-              style: GoogleFonts.poppins(fontSize: 13),
-            ),
-          ),
+          Expanded(child: Text(text, style: GoogleFonts.poppins(fontSize: 13))),
         ],
       ),
     );

@@ -7,477 +7,748 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'result_screen.dart';
+
 class DiseaseDetectionScreen extends StatefulWidget {
-  const DiseaseDetectionScreen({Key? key}) : super(key: key);
+  const DiseaseDetectionScreen({super.key});
 
   @override
   State<DiseaseDetectionScreen> createState() => _DiseaseDetectionScreenState();
 }
 
 class _DiseaseDetectionScreenState extends State<DiseaseDetectionScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   List<File> _selectedImages = [];
   final ImagePicker _picker = ImagePicker();
   bool _isAnalyzing = false;
-  Map<String, dynamic>? _analysisResult;
-  late AnimationController _animationController;
-  late Animation<double> _fadeAnimation;
 
-  // ⚙️ Change this to your backend server IP
-  final String _apiUrl = 'http://192.168.1.7:5000/api/detect';
+  final TextEditingController _ageController = TextEditingController();
+  final TextEditingController _regionController = TextEditingController();
+  final TextEditingController _areaTypeController = TextEditingController();
+
+  String? _selectedSex;
+  final List<String> _sexOptions = ['Male', 'Female', 'Other'];
+
+  final String _apiUrl = 'http://10.15.65.92:8000/predict';
+
+  late AnimationController _pulseController;
+  late Animation<double> _pulseAnimation;
 
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
+    _pulseController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 600),
+      duration: const Duration(seconds: 2),
+    )..repeat(reverse: true);
+    _pulseAnimation = Tween<double>(begin: 1.0, end: 1.05).animate(
+      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
     );
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeIn),
-    );
-    _animationController.forward();
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
+    _pulseController.dispose();
+    _ageController.dispose();
+    _regionController.dispose();
+    _areaTypeController.dispose();
     super.dispose();
   }
 
-  Future<void> _showImageSourceDialog() async {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ),
-        ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 50,
-                  height: 5,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade300,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  'Choose Image Source',
-                  style: GoogleFonts.poppins(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.grey.shade800,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildSourceOption(
-                        icon: Icons.photo_library,
-                        label: 'Gallery',
-                        color: Colors.teal,
-                        onTap: () {
-                          Navigator.pop(context);
-                          _pickImagesFromGallery();
-                        },
-                      ),
-                    ),
-                    const SizedBox(width: 15),
-                    Expanded(
-                      child: _buildSourceOption(
-                        icon: Icons.camera_alt,
-                        label: 'Camera',
-                        color: Colors.blue,
-                        onTap: () {
-                          Navigator.pop(context);
-                          _pickImageFromCamera();
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSourceOption({
-    required IconData icon,
-    required String label,
-    required Color color,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        decoration: BoxDecoration(
-          color: color.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(15),
-          border: Border.all(color: color.withOpacity(0.3)),
-        ),
-        child: Column(
-          children: [
-            Icon(icon, size: 40, color: color),
-            const SizedBox(height: 10),
-            Text(
-              label,
-              style: GoogleFonts.poppins(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: color,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Future<void> _pickImagesFromGallery() async {
-    try {
-      final status = await Permission.photos.request();
-      if (!status.isGranted) {
-        _showErrorSnackbar(
-          'Permission denied. Please allow access to gallery.',
-        );
-        return;
-      }
-
-      final List<XFile>? images = await _picker.pickMultiImage(
-        imageQuality: 80,
+  Future<void> _pickImage() async {
+    final status = await Permission.photos.request();
+    if (!status.isGranted) {
+      _showSnackBar(
+        'Photo permission is required to select images.',
+        isError: true,
       );
-
-      if (images != null && images.isNotEmpty) {
-        setState(() {
-          _selectedImages = images.map((img) => File(img.path)).toList();
-          _analysisResult = null;
-        });
-      } else {
-        _showErrorSnackbar('No images selected.');
-      }
-    } catch (e) {
-      _showErrorSnackbar('Error picking images: $e');
-    }
-  }
-
-  Future<void> _pickImageFromCamera() async {
-    try {
-      final status = await Permission.camera.request();
-      if (!status.isGranted) {
-        _showErrorSnackbar('Camera permission denied.');
-        return;
-      }
-
-      final XFile? image = await _picker.pickImage(
-        source: ImageSource.camera,
-        imageQuality: 80,
-      );
-
-      if (image != null) {
-        setState(() {
-          _selectedImages.add(File(image.path));
-          _analysisResult = null;
-        });
-      } else {
-        _showErrorSnackbar('No image captured.');
-      }
-    } catch (e) {
-      _showErrorSnackbar('Error picking image: $e');
-    }
-  }
-
-  Future<void> _analyzeImages() async {
-    if (_selectedImages.isEmpty) {
-      _showErrorSnackbar('Please select at least one image');
       return;
     }
-
-    setState(() {
-      _isAnalyzing = true;
-    });
-
-    try {
-      final request = http.MultipartRequest('POST', Uri.parse(_apiUrl));
-
-      for (var img in _selectedImages) {
-        request.files.add(
-          await http.MultipartFile.fromPath('images', img.path),
-        );
-      }
-
-      final response = await request.send();
-      final resBody = await response.stream.bytesToString();
-
-      if (response.statusCode == 200) {
-        setState(() {
-          _analysisResult = json.decode(resBody);
-        });
-        _showSuccessSnackbar('Analysis completed successfully');
-      } else {
-        _showErrorSnackbar('Server error: ${response.statusCode}');
-      }
-    } catch (e) {
-      _showErrorSnackbar('Failed to analyze: $e');
-    } finally {
+    final images = await _picker.pickMultiImage();
+    if (images.isNotEmpty) {
       setState(() {
-        _isAnalyzing = false;
+        _selectedImages = images.map((e) => File(e.path)).toList();
       });
     }
   }
 
-  void _showErrorSnackbar(String message) {
+  Future<void> _pickFromCamera() async {
+    final status = await Permission.camera.request();
+    if (!status.isGranted) {
+      _showSnackBar('Camera permission is required.', isError: true);
+      return;
+    }
+    final image = await _picker.pickImage(source: ImageSource.camera);
+    if (image != null) {
+      setState(() {
+        _selectedImages = [File(image.path)];
+      });
+    }
+  }
+
+  void _showSnackBar(String message, {bool isError = false}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(message, style: GoogleFonts.poppins(color: Colors.white)),
-        backgroundColor: Colors.red.shade700,
-        duration: const Duration(seconds: 3),
+        content: Text(message, style: GoogleFonts.dmSans(color: Colors.white)),
+        backgroundColor: isError
+            ? const Color(0xFFE53935)
+            : const Color(0xFF1A6B5E),
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        margin: const EdgeInsets.all(16),
       ),
     );
   }
 
-  void _showSuccessSnackbar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message, style: GoogleFonts.poppins(color: Colors.white)),
-        backgroundColor: Colors.teal.shade700,
-        duration: const Duration(seconds: 2),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      ),
-    );
+  bool get _isFormValid =>
+      _selectedImages.isNotEmpty &&
+      _ageController.text.trim().isNotEmpty &&
+      _selectedSex != null &&
+      _regionController.text.trim().isNotEmpty;
+
+  Future<void> _analyzeImages() async {
+    if (!_isFormValid) {
+      _showSnackBar(
+        'Please fill all required fields and select an image.',
+        isError: true,
+      );
+      return;
+    }
+
+    final age = _ageController.text.trim();
+    final sex = _selectedSex ?? '';
+    final region = _regionController.text.trim();
+    final areaType = _areaTypeController.text.trim();
+
+    setState(() => _isAnalyzing = true);
+
+    try {
+      final request = http.MultipartRequest('POST', Uri.parse(_apiUrl));
+      request.files.add(
+        await http.MultipartFile.fromPath('image', _selectedImages[0].path),
+      );
+      request.fields['age'] = age;
+      request.fields['sex'] = sex;
+      request.fields['region'] = region;
+
+      final response = await request.send();
+      final res = await response.stream.bytesToString();
+      final prediction = json.decode(res);
+
+      if (!mounted) return;
+      print(prediction);
+
+      Navigator.push(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (_, animation, __) => ResultScreen(
+            prediction: prediction,
+            age: age,
+            sex: sex,
+            region: region,
+            areaType: areaType,
+            imageUrl: prediction['heatmap'] ?? '',
+          ),
+          transitionsBuilder: (_, animation, __, child) {
+            return FadeTransition(
+              opacity: animation,
+              child: SlideTransition(
+                position:
+                    Tween<Offset>(
+                      begin: const Offset(0, 0.08),
+                      end: Offset.zero,
+                    ).animate(
+                      CurvedAnimation(parent: animation, curve: Curves.easeOut),
+                    ),
+                child: child,
+              ),
+            );
+          },
+          transitionDuration: const Duration(milliseconds: 450),
+        ),
+      );
+    } catch (e) {
+      _showSnackBar(
+        'Analysis failed. Please check your connection.',
+        isError: true,
+      );
+    } finally {
+      if (mounted) setState(() => _isAnalyzing = false);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
-      appBar: AppBar(
-        elevation: 0,
-        title: Text(
-          'Disease Detection',
-          style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
+      backgroundColor: const Color(0xFFF5F6FA),
+      body: CustomScrollView(
+        slivers: [
+          _buildSliverAppBar(),
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 120),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate([
+                const SizedBox(height: 24),
+                _buildImageSection(),
+                const SizedBox(height: 24),
+                _buildPatientInfoCard(),
+                const SizedBox(height: 32),
+              ]),
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: _buildAnalyzeButton(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
+
+  Widget _buildSliverAppBar() {
+    return SliverAppBar(
+      expandedHeight: 140,
+      pinned: true,
+      backgroundColor: const Color(0xFF0F3D38),
+      elevation: 0,
+      flexibleSpace: FlexibleSpaceBar(
+        background: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Color(0xFF0F3D38), Color(0xFF1A6B5E)],
+            ),
+          ),
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Container(
+                        width: 36,
+                        height: 36,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Icon(
+                          Icons.biotech_rounded,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Text(
+                        'DermaScan AI',
+                        style: GoogleFonts.dmSans(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: -0.3,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    'Disease Detection',
+                    style: GoogleFonts.dmSerifDisplay(
+                      color: Colors.white,
+                      fontSize: 28,
+                      fontWeight: FontWeight.w400,
+                      letterSpacing: -0.5,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
-        backgroundColor: Colors.teal.shade700,
       ),
-      body: FadeTransition(
-        opacity: _fadeAnimation,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+      leading: Container(),
+      leadingWidth: 0,
+    );
+  }
+
+  Widget _buildImageSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _sectionLabel('Skin Image', isRequired: true),
+        const SizedBox(height: 10),
+        if (_selectedImages.isEmpty) ...[
+          Row(
             children: [
-              // Image Grid
-              Container(
-                height: 350,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 10,
-                      offset: const Offset(0, 5),
+              Expanded(
+                child: _buildImagePickerTile(
+                  icon: Icons.photo_library_outlined,
+                  label: 'Gallery',
+                  onTap: _pickImage,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _buildImagePickerTile(
+                  icon: Icons.camera_alt_outlined,
+                  label: 'Camera',
+                  onTap: _pickFromCamera,
+                ),
+              ),
+            ],
+          ),
+        ] else ...[
+          Stack(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Image.file(
+                  _selectedImages[0],
+                  width: double.infinity,
+                  height: 220,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Positioned(
+                top: 10,
+                right: 10,
+                child: GestureDetector(
+                  onTap: () => setState(() => _selectedImages = []),
+                  child: Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.55),
+                      shape: BoxShape.circle,
                     ),
-                  ],
-                ),
-                child: _selectedImages.isEmpty
-                    ? Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.image_outlined,
-                            size: 80,
-                            color: Colors.grey.shade300,
-                          ),
-                          const SizedBox(height: 15),
-                          Text(
-                            'No images selected',
-                            style: GoogleFonts.poppins(
-                              color: Colors.grey.shade500,
-                              fontSize: 16,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Select one or more images to analyze',
-                            style: GoogleFonts.poppins(
-                              color: Colors.grey.shade400,
-                              fontSize: 13,
-                            ),
-                          ),
-                        ],
-                      )
-                    : GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3,
-                              crossAxisSpacing: 8,
-                              mainAxisSpacing: 8,
-                            ),
-                        itemCount: _selectedImages.length,
-                        itemBuilder: (context, index) {
-                          return ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: Image.file(
-                              _selectedImages[index],
-                              fit: BoxFit.cover,
-                            ),
-                          );
-                        },
-                      ),
-              ),
-              const SizedBox(height: 25),
-
-              // Select Images Button
-              ElevatedButton.icon(
-                onPressed: _showImageSourceDialog,
-                icon: const Icon(
-                  Icons.add_photo_alternate,
-                  color: Colors.white,
-                ),
-                label: Text(
-                  _selectedImages.isEmpty
-                      ? 'Select Images'
-                      : 'Add/Change Images',
-                  style: GoogleFonts.poppins(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white
-                  ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.teal.shade700,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    child: const Icon(
+                      Icons.close,
+                      color: Colors.white,
+                      size: 18,
+                    ),
                   ),
                 ),
               ),
-              const SizedBox(height: 15),
-
-              // Analyze Button
-              ElevatedButton.icon(
-                onPressed: _isAnalyzing || _selectedImages.isEmpty
-                    ? null
-                    : _analyzeImages,
-                icon: _isAnalyzing
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation(Colors.white),
+              Positioned(
+                bottom: 10,
+                right: 10,
+                child: GestureDetector(
+                  onTap: _pickImage,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.55),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.swap_horiz,
+                          color: Colors.white,
+                          size: 16,
                         ),
-                      )
-                    : const Icon(Icons.analytics, color: Colors.white),
-                label: Text(
-                  _isAnalyzing ? 'Analyzing...' : 'Analyze Images',
-                  style: GoogleFonts.poppins(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white
+                        const SizedBox(width: 4),
+                        Text(
+                          'Change',
+                          style: GoogleFonts.dmSans(
+                            color: Colors.white,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue.shade600,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  disabledBackgroundColor: Colors.lightGreen,
                 ),
               ),
-              const SizedBox(height: 30),
+            ],
+          ),
+        ],
+      ],
+    );
+  }
 
-              // Analysis Result
-              if (_analysisResult != null)
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 10,
-                        offset: const Offset(0, 5),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.green.shade50,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Icon(
-                              Icons.check_circle,
-                              color: Colors.green.shade700,
-                              size: 24,
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Text(
-                            'Analysis Result',
-                            style: GoogleFonts.poppins(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.grey.shade800,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Container(
-                        padding: const EdgeInsets.all(15),
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade50,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: Colors.grey.shade200),
-                        ),
-                        child: Text(
-                          jsonEncode(_analysisResult),
-                          style: GoogleFonts.robotoMono(
-                            fontSize: 13,
-                            color: Colors.grey.shade800,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+  Widget _buildImagePickerTile({
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedBuilder(
+        animation: _pulseAnimation,
+        builder: (context, child) {
+          return Transform.scale(
+            scale: _selectedImages.isEmpty ? _pulseAnimation.value : 1.0,
+            child: child,
+          );
+        },
+        child: Container(
+          height: 120,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: const Color(0xFF1A6B5E).withOpacity(0.3),
+              width: 1.5,
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1A6B5E).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
                 ),
+                child: Icon(icon, color: const Color(0xFF1A6B5E), size: 22),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                label,
+                style: GoogleFonts.dmSans(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                  color: const Color(0xFF1A6B5E),
+                ),
+              ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildPatientInfoCard() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 20,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 32,
+                height: 32,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1A6B5E).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(
+                  Icons.person_outline,
+                  color: Color(0xFF1A6B5E),
+                  size: 18,
+                ),
+              ),
+              const SizedBox(width: 10),
+              Text(
+                'Patient Information',
+                style: GoogleFonts.dmSans(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF0F3D38),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+
+          // Age + Sex row
+          Row(
+            children: [
+              Expanded(
+                child: _buildInputField(
+                  controller: _ageController,
+                  label: 'Age',
+                  hint: 'e.g. 34',
+                  icon: Icons.cake_outlined,
+                  keyboardType: TextInputType.number,
+                  isRequired: true,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(child: _buildSexSelector()),
+            ],
+          ),
+          const SizedBox(height: 16),
+
+          _buildInputField(
+            controller: _regionController,
+            label: 'Region / Body Area',
+            hint: 'e.g. Back, Arm, Face',
+            icon: Icons.place_outlined,
+            isRequired: true,
+          ),
+          const SizedBox(height: 16),
+
+          _buildInputField(
+            controller: _areaTypeController,
+            label: 'Area Type',
+            hint: 'e.g. Urban, Rural',
+            icon: Icons.landscape_outlined,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSexSelector() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Text(
+              'Sex',
+              style: GoogleFonts.dmSans(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: const Color(0xFF6B7280),
+              ),
+            ),
+            Text(
+              ' *',
+              style: GoogleFonts.dmSans(
+                color: const Color(0xFFE53935),
+                fontSize: 12,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        Container(
+          height: 50,
+          decoration: BoxDecoration(
+            color: const Color(0xFFF9FAFB),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: const Color(0xFFE5E7EB)),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton<String>(
+              value: _selectedSex,
+              hint: Text(
+                'Select',
+                style: GoogleFonts.dmSans(
+                  fontSize: 14,
+                  color: const Color(0xFF9CA3AF),
+                ),
+              ),
+              isExpanded: true,
+              icon: const Icon(
+                Icons.keyboard_arrow_down_rounded,
+                color: Color(0xFF6B7280),
+              ),
+              items: _sexOptions
+                  .map(
+                    (s) => DropdownMenuItem(
+                      value: s,
+                      child: Text(s, style: GoogleFonts.dmSans(fontSize: 14)),
+                    ),
+                  )
+                  .toList(),
+              onChanged: (val) => setState(() => _selectedSex = val),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildInputField({
+    required TextEditingController controller,
+    required String label,
+    required String hint,
+    required IconData icon,
+    TextInputType keyboardType = TextInputType.text,
+    bool isRequired = false,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Text(
+              label,
+              style: GoogleFonts.dmSans(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: const Color(0xFF6B7280),
+              ),
+            ),
+            if (isRequired)
+              Text(
+                ' *',
+                style: GoogleFonts.dmSans(
+                  color: const Color(0xFFE53935),
+                  fontSize: 12,
+                ),
+              ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        TextField(
+          controller: controller,
+          keyboardType: keyboardType,
+          style: GoogleFonts.dmSans(
+            fontSize: 14,
+            color: const Color(0xFF111827),
+          ),
+          onChanged: (_) => setState(() {}),
+          decoration: InputDecoration(
+            hintText: hint,
+            hintStyle: GoogleFonts.dmSans(
+              fontSize: 14,
+              color: const Color(0xFF9CA3AF),
+            ),
+            prefixIcon: Icon(icon, size: 18, color: const Color(0xFF9CA3AF)),
+            filled: true,
+            fillColor: const Color(0xFFF9FAFB),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 14,
+              vertical: 14,
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(
+                color: Color(0xFF1A6B5E),
+                width: 1.5,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAnalyzeButton() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: GestureDetector(
+        onTap: _isAnalyzing ? null : _analyzeImages,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          height: 56,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            gradient: _isFormValid
+                ? const LinearGradient(
+                    colors: [Color(0xFF0F3D38), Color(0xFF1A6B5E)],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                  )
+                : null,
+            color: _isFormValid ? null : const Color(0xFFE5E7EB),
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: _isFormValid
+                ? [
+                    BoxShadow(
+                      color: const Color(0xFF1A6B5E).withOpacity(0.35),
+                      blurRadius: 16,
+                      offset: const Offset(0, 6),
+                    ),
+                  ]
+                : [],
+          ),
+          child: Center(
+            child: _isAnalyzing
+                ? Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2.5,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Text(
+                        'Analyzing...',
+                        style: GoogleFonts.dmSans(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  )
+                : Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.search_rounded,
+                        color: _isFormValid
+                            ? Colors.white
+                            : const Color(0xFF9CA3AF),
+                        size: 20,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Run Analysis',
+                        style: GoogleFonts.dmSans(
+                          color: _isFormValid
+                              ? Colors.white
+                              : const Color(0xFF9CA3AF),
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _sectionLabel(String text, {bool isRequired = false}) {
+    return Row(
+      children: [
+        Text(
+          text,
+          style: GoogleFonts.dmSans(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: const Color(0xFF0F3D38),
+            letterSpacing: -0.2,
+          ),
+        ),
+        if (isRequired)
+          Text(
+            ' *',
+            style: GoogleFonts.dmSans(
+              color: const Color(0xFF044C01),
+              fontSize: 14,
+            ),
+          ),
+      ],
     );
   }
 }

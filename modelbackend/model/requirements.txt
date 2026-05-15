@@ -1,0 +1,17 @@
+fastapi==0.110.0
+pydantic==2.6.4
+uvicorn[standard]
+
+torch==2.3.0
+torchvision==0.18.0
+numpy==1.26.4
+
+opencv-python
+Pillow
+timm
+torchcam
+joblib
+huggingface_hub
+python-multipart
+
+scikit-learn==1.4.2

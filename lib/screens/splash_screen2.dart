@@ -1,5 +1,5 @@
+import 'package:disease_detection_app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:disease_detection_app/screens/homescreen.dart';
 
 class SplashScreen2 extends StatefulWidget {
   const SplashScreen2({super.key});
@@ -46,15 +46,13 @@ class _SplashScreen2State extends State<SplashScreen2>
       ),
     );
 
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.5),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: const Interval(0.3, 0.7, curve: Curves.easeOut),
-      ),
-    );
+    _slideAnimation =
+        Tween<Offset>(begin: const Offset(0, 0.5), end: Offset.zero).animate(
+          CurvedAnimation(
+            parent: _controller,
+            curve: const Interval(0.3, 0.7, curve: Curves.easeOut),
+          ),
+        );
 
     _progressAnimation = CurvedAnimation(
       parent: _controller,
@@ -73,19 +71,22 @@ class _SplashScreen2State extends State<SplashScreen2>
           context,
           PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) =>
-            const HomePage(),
+                const HomePage(),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
-              return FadeTransition(
-                opacity: animation,
-                child: ScaleTransition(
-                  scale: Tween<double>(begin: 0.95, end: 1.0).animate(
-                    CurvedAnimation(parent: animation, curve: Curves.easeOut),
-                  ),
-                  child: child,
-                ),
-              );
-            },
+                  return FadeTransition(
+                    opacity: animation,
+                    child: ScaleTransition(
+                      scale: Tween<double>(begin: 0.95, end: 1.0).animate(
+                        CurvedAnimation(
+                          parent: animation,
+                          curve: Curves.easeOut,
+                        ),
+                      ),
+                      child: child,
+                    ),
+                  );
+                },
             transitionDuration: const Duration(milliseconds: 800),
           ),
         );
@@ -108,11 +109,7 @@ class _SplashScreen2State extends State<SplashScreen2>
           gradient: LinearGradient(
             begin: Alignment.topRight,
             end: Alignment.bottomLeft,
-            colors: [
-              Colors.white,
-              Colors.teal.shade50,
-              Colors.cyan.shade50,
-            ],
+            colors: [Colors.white, Colors.teal.shade50, Colors.cyan.shade50],
           ),
         ),
         child: SafeArea(
@@ -434,7 +431,8 @@ class _SplashScreen2State extends State<SplashScreen2>
                                     ),
                                   ],
                                 ),
-                                width: MediaQuery.of(context).size.width *
+                                width:
+                                    MediaQuery.of(context).size.width *
                                     _progressAnimation.value,
                               ),
                             ],
